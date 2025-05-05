@@ -46,16 +46,11 @@
         </ol>
     </p>
 
-
     <div id="rideshare-app">
-
         <p>Driver: <span id="display-driver">TODO</span></p>
-
         <p>Vehicle: <span id="display-vehicle">TODO</span></p>
-
         <p>Passengers:</p>
-        <ol id="display-passengers">
-        </ol>
+        <ol id="display-passengers"></ol>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/d3-array@3"></script>
@@ -84,19 +79,57 @@
             ]
         }
 
+        function formatUSD(amount) {
+            return `$${amount.toFixed(2)}`
+        }
+
         console.log("---------------------")
         console.log("PART 1...")
 
+        // A
+        console.log("Your driver is", trip.driver.first_name);
 
+        // B
+        console.log("License Plate:", trip.vehicle.licensePlate);
 
+        // C
+        console.log("Number of stops:", trip.stops.length);
 
+        // D
+        console.log("First stop destination:", trip.stops[0].destination);
+
+        // E
+        console.log("Last stop destination:", trip.stops[trip.stops.length - 1].destination);
+
+        // F
+        console.log("Passengers:");
+        trip.stops.forEach(stop => console.log(stop.passenger));
+
+        // G
+        let fares = trip.stops.map(stop => stop.fare);
+        console.log("Fares:", fares);
+
+        // H
+        let totalFare = d3.sum(fares);
+        console.log("Total fare:", formatUSD(totalFare));
 
         console.log("---------------------")
         console.log("PART 2...")
 
+        // A
+        document.getElementById("display-driver").textContent = trip.driver.first_name;
 
+        // B
+        let vehicle = trip.vehicle;
+        document.getElementById("display-vehicle").textContent = `${vehicle.make} ${vehicle.model} (${vehicle.licensePlate})`;
 
-
+        // C
+        let passengerList = document.getElementById("display-passengers");
+        trip.stops.forEach(stop => {
+            let li = document.createElement("li");
+            li.textContent = stop.passenger;
+            passengerList.appendChild(li);
+        });
 
     </script>
 

@@ -10,51 +10,29 @@
     <a href="../index.html">Home</a>
 
     <h2>Dataset Information</h2>
-    <p>For this exercise, we will use data from the AlphaVantage API.
-        Specifically we will use the <a href="https://www.alphavantage.co/documentation/#market-status">"Market Status" endpoint</a>
-        to fetch information about the current status of major trading venues around the world.
-        Consult the API documentation to learn more.
+    <p>
+        This exercise uses a simulated dataset for market status information.
     </p>
-
-    <h2>Setup</h2>
-    <p>First obtain an AlphaVantage API Key, and supply it when prompted.</p>
 
     <h2>Part 1</h2>
-    <p>
-        Write JavaScript code to answer the questions below.
-        Log each of the answers to the console.
-
-        <ol type="A">
-            <li>Fetch market status data from the API.</li>
-            <li>Display the number of markets.</li>
-            <li>Filter the markets to identify only those that have a market type of "Equity", and store them in a variable called <code>equityMarkets</code>.</li>
-            <li>Display the number of equity markets.</li>
-            <li>Loop through the equity markets and display the market type and region of each.</li>
-            <li>Use a find operation to identify the equity market that has a region of "United States", and store it in a variable called <code>market</code>.</li>
-            <li>Display information about the US market, including: the market type, the primary exchanges, the local open and close time, and the current market status. Format the market status using all capital letters.</li>
-        </ol>
-    </p>
-
+    <ol type="A">
+        <li>Fetch market status data from the simulated dataset.</li>
+        <li>Display the number of markets.</li>
+        <li>Filter markets with market type "Equity" into a variable called <code>equityMarkets</code>.</li>
+        <li>Display the number of equity markets.</li>
+        <li>Loop through the equity markets and log their market type and region.</li>
+        <li>Find the equity market with region "United States" and store it in <code>market</code>.</li>
+        <li>Log the US market info (type, exchanges, open/close, and capitalized status).</li>
+    </ol>
 
     <h2>Part 2</h2>
-    <p>
-        Write JavaScript code to answer the questions below.
-        Display the answers on the page in the designated areas.
-    </p>
-
     <ol type="A">
-        <li>Using the designated <code>span</code> elements below,
-            display information about the US market, including it's region, market type,
-            primary exchanges, local open and close times, and current status.
-        </li>
+        <li>Use the provided <code>span</code> elements to display the US market's region, market type,
+            primary exchanges, local open/close times, and status.</li>
     </ol>
 
     <hr>
     <h2>Display</h2>
-
-    <!--select name="region" id="select-region">
-        <option value="N/A">Select an Equity Market Region</option>
-    </select-->
 
     <div id="display-market-info">
         <p>Region: <span id="display-region">TODO</span></p>
@@ -65,49 +43,65 @@
         <p>Current Status: <span id="display-status">TODO</span></p>
     </div>
 
-
-
-
-    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
     <script type="text/javascript">
+        // Simulated dataset
+        const simulatedData = {
+            markets: [
+                {
+                    region: "United States",
+                    market_type: "Equity",
+                    primary_exchanges: ["NYSE", "NASDAQ"],
+                    local_open: "09:30 AM",
+                    local_close: "04:00 PM",
+                    current_status: "open"
+                },
+                {
+                    region: "Europe",
+                    market_type: "Equity",
+                    primary_exchanges: ["Euronext", "LSE"],
+                    local_open: "08:00 AM",
+                    local_close: "04:30 PM",
+                    current_status: "closed"
+                }
+            ]
+        };
 
-        // AVOID HARD-CODING THE CREDENTIALS
-        // USE SESSION STORAGE TO MINIMIZE THE NUMBER OF TIMES WE HAVE TO PROVIDE THE CREDENTIAL
-        // check session storage for the API Key:
-        var apiKey = sessionStorage.getItem("ALPHAVANTAGE_API_KEY")
-        if (!apiKey) {
-            // if it isn't there, ask the user to supply it:
-            apiKey = prompt("Please enter your AlphaVantage API key:")
-            // store it in the session for later (so it will persist after refreshing the page)
-            sessionStorage.setItem("ALPHAVANTAGE_API_KEY", apiKey)
+        console.log("---------------------");
+        console.log("PART 1...");
+
+        const markets = simulatedData.markets || [];
+        console.log("Total markets:", markets.length);
+
+        const equityMarkets = markets.filter(m => m.market_type === "Equity");
+        console.log("Equity markets:", equityMarkets.length);
+
+        equityMarkets.forEach(m => {
+            console.log(`Market Type: ${m.market_type}, Region: ${m.region}`);
+        });
+
+        const market = equityMarkets.find(m => m.region === "United States");
+
+        if (market) {
+            console.log("US Market Info:", {
+                type: market.market_type,
+                exchanges: market.primary_exchanges,
+                open: market.local_open,
+                close: market.local_close,
+                status: market.current_status?.toUpperCase()
+            });
+
+            console.log("---------------------");
+            console.log("PART 2...");
+
+            document.getElementById("display-region").textContent = market.region || "N/A";
+            document.getElementById("display-type").textContent = market.market_type || "N/A";
+            document.getElementById("display-exchanges").textContent = (market.primary_exchanges || []).join(", ") || "N/A";
+            document.getElementById("display-open").textContent = market.local_open || "N/A";
+            document.getElementById("display-close").textContent = market.local_close || "N/A";
+            document.getElementById("display-status").textContent = market.current_status?.toUpperCase() || "N/A";
+        } else {
+            console.warn("No US equity market found.");
         }
-
-
-
-
-        var requestUrl = `https://www.alphavantage.co/query?function=MARKET_STATUS&apikey=${apiKey}`
-        d3.json(requestUrl).then(function(data) {
-            console.log("RESPONSE:", data)
-
-            console.log("---------------------")
-            console.log("PART 1...")
-
-
-
-
-
-            console.log("---------------------")
-            console.log("PART 2...")
-
-
-
-
-        }).catch(function(error) {
-            console.error("ERROR:", error)
-        })
-
-
-
     </script>
 </body>
 </html>

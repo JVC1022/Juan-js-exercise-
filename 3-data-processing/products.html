@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +34,6 @@
 
     <div id="display-products"></div>
 
-
     <script type="text/javascript">
 
         var products = [
@@ -62,16 +60,53 @@
         console.log("---------------------")
         console.log("PART 1...")
 
+        // A
+        console.log("Total products:", products.length);
 
+        // B
+        products.forEach(p => {
+            console.log(`Name: ${p.name}`);
+            console.log(`Price: $${p.price.toFixed(2)}`);
+        });
 
+        // C
+        let matchingProducts = products.filter(p => p.price < 50);
+        console.log("Matching products under $50:", matchingProducts);
 
-
+        // D
+        console.log("Total matching products:", matchingProducts.length);
 
         console.log("---------------------")
         console.log("PART 2...")
 
+        let container = document.getElementById("display-products");
 
+        products.forEach(product => {
+            let productDiv = document.createElement("div");
 
+            let nameP = document.createElement("p");
+            nameP.textContent = `Name: ${product.name}`;
+
+            let descP = document.createElement("p");
+            descP.textContent = `Description: ${product.description}`;
+
+            let priceP = document.createElement("p");
+            priceP.textContent = `Price: $${product.price.toFixed(2)}`;
+
+            let img = document.createElement("img");
+            img.src = product.imageURL;
+            img.alt = product.name;
+
+            let line = document.createElement("hr");
+
+            productDiv.appendChild(nameP);
+            productDiv.appendChild(descP);
+            productDiv.appendChild(priceP);
+            productDiv.appendChild(img);
+            productDiv.appendChild(line);
+
+            container.appendChild(productDiv);
+        });
 
     </script>
 </body>
